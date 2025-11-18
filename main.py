@@ -21,7 +21,8 @@ def init_db():
             CREATE TABLE IF NOT EXISTS contacts (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
-                phone TEXT NOT NULL
+                phone TEXT NOT NULL,
+                address TEXT NOT NULL
             );
         ''')
         db.commit()
@@ -47,9 +48,10 @@ def index():
             contact_id = request.form.get('contact_id')
             name = request.form.get('name')
             phone = request.form.get('phone')
+            address = request.form.get('address')
             if contact_id and name and phone:
                 db = get_db()
-                db.execute('UPDATE contacts SET name=?, phone=? WHERE id=?', (name, phone, contact_id))
+                db.execute('UPDATE contacts SET name=?, phone=?, address=? WHERE id=?', (name, phone, address, contact_id))
                 db.commit(); db.close()
                 flash('Contact updated.', 'success')
             else:
@@ -59,9 +61,10 @@ def index():
         # default → add
         name = request.form.get('name')
         phone = request.form.get('phone')
+        address = request.form.get('address')
         if name and phone:
             db = get_db()
-            db.execute('INSERT INTO contacts (name, phone) VALUES (?, ?)', (name, phone))
+            db.execute('INSERT INTO contacts (name, phone, address) VALUES (?, ?, ?)', (name, phone, address))
             db.commit(); db.close()
             flash('Contact added successfully.', 'success')
         else:

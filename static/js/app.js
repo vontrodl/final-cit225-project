@@ -6,6 +6,8 @@ filter?.addEventListener('input', () => {
   for (const tr of rows.querySelectorAll('tr')) {
     const name = tr.querySelector('.name')?.textContent.toLowerCase() || '';
     const phone = tr.querySelector('.phone')?.textContent.toLowerCase() || '';
+    const address = tr.querySelector('.address')?.textContent.toLowerCase() || '';
+
     tr.style.display = (name.includes(q) || phone.includes(q)) ? '' : 'none';
   }
 });
@@ -17,4 +19,6 @@ editModal?.addEventListener('show.bs.modal', (ev) => {
   document.getElementById('edit-id').value    = btn.getAttribute('data-id');
   document.getElementById('edit-name').value  = btn.getAttribute('data-name');
   document.getElementById('edit-phone').value = btn.getAttribute('data-phone');
+  document.getElementById('edit-address').value = btn.getAttribute('data-address');
+
 });
