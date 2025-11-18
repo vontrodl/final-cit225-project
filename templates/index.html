@@ -72,9 +72,18 @@
           <table class="table align-middle mb-0 table-striped">
             <thead>
               <tr>
-                <th style="width: 8ch">ID</th>
-                <th style="width: 50%">Name</th>
-                <th style="width: 30%">Phone</th>
+                <th style="width: 8ch">
+                  {% set id_next = 'desc' if sort=='id' and dir=='asc' else 'asc' %}
+                  <a href="{{ url_for('index', page=1, per=per_page, sort='id', dir=id_next) }}">ID{% if sort=='id' %} {{ '▲' if dir=='asc' else '▼' }}{% endif %}</a>
+                </th>
+                <th style="width: 50%">
+                  {% set name_next = 'desc' if sort=='name' and dir=='asc' else 'asc' %}
+                  <a href="{{ url_for('index', page=1, per=per_page, sort='name', dir=name_next) }}">Name{% if sort=='name' %} {{ '▲' if dir=='asc' else '▼' }}{% endif %}</a>
+                </th>
+                <th style="width: 30%">
+                  {% set phone_next = 'desc' if sort=='phone' and dir=='asc' else 'asc' %}
+                  <a href="{{ url_for('index', page=1, per=per_page, sort='phone', dir=phone_next) }}">Phone{% if sort=='phone' %} {{ '▲' if dir=='asc' else '▼' }}{% endif %}</a>
+                </th>
                 <th class="text-end" style="width: 12%">Actions</th>
               </tr>
             </thead>
@@ -120,15 +129,15 @@
         </div>
         <ul class="pagination mb-0">
           <li class="page-item {% if not has_prev %}disabled{% endif %}">
-            <a class="page-link" href="{{ url_for('index', page=page-1, per=per_page) if has_prev else '#' }}">Previous</a>
+            <a class="page-link" href="{{ url_for('index', page=page-1, per=per_page, sort=sort, dir=dir) if has_prev else '#' }}">Previous</a>
           </li>
           {% for p in range(start_page, end_page + 1) %}
             <li class="page-item {% if p==page %}active{% endif %}">
-              <a class="page-link" href="{{ url_for('index', page=p, per=per_page) }}">{{ p }}</a>
+              <a class="page-link" href="{{ url_for('index', page=p, per=per_page, sort=sort, dir=dir) }}">{{ p }}</a>
             </li>
           {% endfor %}
           <li class="page-item {% if not has_next %}disabled{% endif %}">
-            <a class="page-link" href="{{ url_for('index', page=page+1, per=per_page) if has_next else '#' }}">Next</a>
+            <a class="page-link" href="{{ url_for('index', page=page+1, per=per_page, sort=sort, dir=dir) if has_next else '#' }}">Next</a>
           </li>
         </ul>
       </nav>

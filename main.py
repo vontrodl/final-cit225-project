@@ -6,7 +6,7 @@ import math
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret")
 
-DATABASE = '/nfs/demo.db'
+DATABASE = os.environ.get('DATABASE', '/nfs/demo.db')
 PER_PAGE_DEFAULT = 10
 
 def get_db():
@@ -79,12 +79,21 @@ def index():
         per_page = PER_PAGE_DEFAULT
     offset = (page - 1) * per_page
 
+    # Sorting support (by id, name, phone) and direction (asc, desc)
+    sort = request.args.get('sort', 'id')
+    direction = request.args.get('dir', 'desc')
+    allowed = {'id': 'id', 'name': 'name', 'phone': 'phone'}
+    if sort not in allowed:
+        sort = 'id'
+    if direction not in ('asc', 'desc'):
+        direction = 'desc'
+
     db = get_db()
     total = db.execute('SELECT COUNT(*) FROM contacts').fetchone()[0]
-    contacts = db.execute(
-        'SELECT * FROM contacts ORDER BY id DESC LIMIT ? OFFSET ?',
-        (per_page, offset)
-    ).fetchall()
+    order_clause = f"{allowed[sort]} {direction.upper()}"
+    # Safe: column is validated against `allowed` map and direction limited to asc/desc
+    query = f'SELECT * FROM contacts ORDER BY {order_clause} LIMIT ? OFFSET ?'
+    contacts = db.execute(query, (per_page, offset)).fetchall()
     db.close()
 
     pages = max(1, math.ceil(total / per_page))
@@ -99,6 +108,7 @@ def index():
         page=page, pages=pages, per_page=per_page,
         has_prev=has_prev, has_next=has_next, total=total,
         start_page=start_page, end_page=end_page
+        , sort=sort, dir=direction
     )
 
 if __name__ == "__main__":
