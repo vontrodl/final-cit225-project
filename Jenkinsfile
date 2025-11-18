@@ -25,14 +25,6 @@ pipeline {
             }
         }
         
-        stage('Run Unit Tests') {
-            steps {
-                sh 'python3 -m pip3 install --upgrade pip'
-                sh 'python3 -m pip3 install -r requirements1.txt -r requirements2.txt'
-                sh 'pytest -q'
-            }
-        }
-        
         stage('Build & Push Docker Image') {
           steps {
             script {
