@@ -85,7 +85,7 @@ def index():
     # Sorting support (by id, name, phone) and direction (asc, desc)
     sort = request.args.get('sort', 'id')
     direction = request.args.get('dir', 'desc')
-    allowed = {'id': 'id', 'name': 'name', 'phone': 'phone'}
+    allowed = {'id': 'id', 'name': 'name', 'phone': 'phone', 'address':'address'}
     if sort not in allowed:
         sort = 'id'
     if direction not in ('asc', 'desc'):
