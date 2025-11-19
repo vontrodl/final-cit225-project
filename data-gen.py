@@ -11,7 +11,7 @@ def generate_test_data(num_contacts):
     """Generate test data for the contacts table."""
     db = connect_db()
     cur = db.cursor()
-    cur.execute(“ALTER TABLE contacts ADD COLUMN address TEXT;“)
+    cur.execute("ALTER TABLE contacts ADD COLUMN address TEXT;")
     for i in range(num_contacts):
         name = f'Test Name {i}'
         phone = f'123-456-789{i}'
