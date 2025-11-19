@@ -10,11 +10,11 @@ def connect_db():
 def generate_test_data(num_contacts):
     """Generate test data for the contacts table."""
     db = connect_db()
-    cur = db.cursor()
-    cur.execute("PRAGMA table_info(contacts);")
-    cols = [row[1] for row in cur.fetchall()]
-    if 'address' not in cols:
-        cur.execute("ALTER TABLE contacts ADD COLUMN address TEXT;")
+    # cur = db.cursor()
+    # cur.execute("PRAGMA table_info(contacts);")
+    # cols = [row[1] for row in cur.fetchall()]
+    # if 'address' not in cols:
+    #     cur.execute("ALTER TABLE contacts ADD COLUMN address TEXT;")
     for i in range(num_contacts):
         name = f'Test Name {i}'
         phone = f'123-456-789{i}'

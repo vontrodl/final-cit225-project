@@ -86,6 +86,15 @@ pipeline {
           }
         } 
    
+        stage('Check DB Columns') {
+            steps {
+                script {
+                    def appPod = sh(script: "kubectl get pods -l app=flask -o jsonpath='{.items[0].metadata.name}'", returnStdout: true).trim()
+                    sh "kubectl exec ${appPod} -- python3 data-check-for-columns.py"
+                }
+            }
+        }
+
         stage('Generate Test Data') {
             steps {
                 script {
